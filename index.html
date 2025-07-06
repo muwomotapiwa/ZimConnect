@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zim Connect - Empowering Zimbabwean Youth</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header/Navigation Bar -->
+    <header class="header">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="https://af6815798a.imgdist.com/pub/bfra/knkjywkm/o5a/c9k/02e/zimbabwe-waving-flag-realistic-transparent-background-free-png.webp" alt="Zimbabwe Flag" class="flag-logo">
+                <h1>Zim Connect</h1>
+            </div>
+            
+            <!-- Hamburger menu button -->
+            <button id="hamburger-menu" class="hamburger-menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <!-- Desktop Navigation -->
+            <nav class="desktop-nav">
+                <ul class="nav-list">
+                    <li><a href="#" class="nav-link" data-target="home">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="nav-link" data-target="find-jobs">Jobs <i class="fas fa-caret-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="nav-link" data-target="find-jobs">Find Jobs</a></li>
+                            <li><a href="#" class="nav-link" data-target="post-job">Post Job</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" class="nav-link" data-target="advertise-with-us">Advertise</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="nav-link" data-target="learn-grow">Growth & Entrepreneurship <i class="fas fa-caret-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="nav-link" data-target="learn-grow">Learn & Grow</a></li>
+                            <li><a href="#" class="nav-link" data-target="entrepreneurship-hub">Entrepreneurship Hub</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" class="nav-link" data-target="discover-zimbabwe">Discover Zim</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="nav-link" data-target="my-profile">Profile <i class="fas fa-caret-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="nav-link" data-target="my-profile">My Profile</a></li>
+                            <li><a href="#" class="nav-link" data-target="enhanced-profiles">Enhanced Profiles</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="nav-link" data-target="interactive-learning">Engagement Hub <i class="fas fa-caret-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" class="nav-link" data-target="interactive-learning">Learning Hub</a></li>
+                            <li><a href="#" class="nav-link" data-target="community-networking">Community</a></li>
+                            <li><a href="#" class="nav-link" data-target="entrepreneurship-deep-dive">Hub Deep Dive</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" class="nav-link" data-target="data-analytics">Data & Analytics</a></li>
+                    
+                    <!-- Authentication Section -->
+                    <li class="dropdown login-dropdown">
+                        <a href="#" class="nav-link auth-toggle">
+                            <span id="auth-text">Login</span> <i class="fas fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu" id="auth-dropdown">
+                            <li><a href="#" class="nav-link" data-target="sign-in">Sign In</a></li>
+                            <li><a href="#" class="nav-link" data-target="sign-up">Sign Up</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <nav id="mobile-nav" class="mobile-nav">
+            <ul class="mobile-nav-list">
+                <li><a href="#" class="nav-link" data-target="home">Home</a></li>
+                <li class="mobile-dropdown">
+                    <span class="mobile-dropdown-title">Jobs</span>
+                    <ul class="mobile-dropdown-menu">
+                        <li><a href="#" class="nav-link" data-target="find-jobs">Find Jobs</a></li>
+                        <li><a href="#" class="nav-link" data-target="post-job">Post Job</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" class="nav-link" data-target="advertise-with-us">Advertise</a></li>
+                <li class="mobile-dropdown">
+                    <span class="mobile-dropdown-title">Growth & Entrepreneurship</span>
+                    <ul class="mobile-dropdown-menu">
+                        <li><a href="#" class="nav-link" data-target="learn-grow">Learn & Grow</a></li>
+                        <li><a href="#" class="nav-link" data-target="entrepreneurship-hub">Entrepreneurship Hub</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" class="nav-link" data-target="discover-zimbabwe">Discover Zim</a></li>
+                <li class="mobile-dropdown">
+                    <span class="mobile-dropdown-title">Profile</span>
+                    <ul class="mobile-dropdown-menu">
+                        <li><a href="#" class="nav-link" data-target="my-profile">My Profile</a></li>
+                        <li><a href="#" class="nav-link" data-target="enhanced-profiles">Enhanced Profiles</a></li>
+                    </ul>
+                </li>
+                <li class="mobile-dropdown">
+                    <span class="mobile-dropdown-title">Engagement Hub</span>
+                    <ul class="mobile-dropdown-menu">
+                        <li><a href="#" class="nav-link" data-target="interactive-learning">Learning Hub</a></li>
+                        <li><a href="#" class="nav-link" data-target="community-networking">Community</a></li>
+                        <li><a href="#" class="nav-link" data-target="entrepreneurship-deep-dive">Hub Deep Dive</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" class="nav-link" data-target="data-analytics">Data & Analytics</a></li>
+                <li class="mobile-dropdown">
+                    <span class="mobile-dropdown-title" id="mobile-auth-text">Login</span>
+                    <ul class="mobile-dropdown-menu" id="mobile-auth-dropdown">
+                        <li><a href="#" class="nav-link" data-target="sign-in">Sign In</a></li>
+                        <li><a href="#" class="nav-link" data-target="sign-up">Sign Up</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Authentication Required Overlay -->
+    <div id="auth-overlay" class="auth-overlay">
+        <div class="auth-overlay-content">
+            <i class="fas fa-lock auth-overlay-icon"></i>
+            <h3>Authentication Required</h3>
+            <p>Please sign in or create an account to access this feature.</p>
+            <div class="auth-overlay-buttons">
+                <button class="btn btn-primary nav-link" data-target="sign-in">Sign In</button>
+                <button class="btn btn-secondary nav-link" data-target="sign-up">Sign Up</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Home Section -->
+        <section id="home" class="page-section active">
+            <div class="container">
+                <div class="hero-section">
+                    <h2 class="hero-title">Welcome to Zim Connect!</h2>
+                    <p class="hero-description">
+                        Your one-stop platform dedicated to empowering Zimbabwean youth by connecting them with job opportunities,
+                        essential skills training, and resources to kickstart their entrepreneurial journeys.
+                        We aim to bridge the gap between talent and opportunity, fostering a brighter future for all.
+                    </p>
+                </div>
+                
+                <div class="feature-cards">
+                    <!-- Card 1: Find Jobs - Green Theme -->
+                    <div class="feature-card green-theme">
+                        <i class="fas fa-search card-icon"></i>
+                        <h3 class="card-title">Find Your Dream Job</h3>
+                        <p class="card-description">Explore a wide range of job opportunities tailored for young professionals and job seekers.</p>
+                        <button class="btn btn-primary nav-link" data-target="find-jobs">Browse Jobs</button>
+                    </div>
+                    
+                    <!-- Card 2: Ignite Business - Yellow/Gold Theme -->
+                    <div class="feature-card yellow-theme">
+                        <i class="fas fa-lightbulb card-icon"></i>
+                        <h3 class="card-title">Ignite Your Business Idea</h3>
+                        <p class="card-description">Access resources, mentorship, and funding information to launch and grow your venture.</p>
+                        <button class="btn btn-primary nav-link" data-target="entrepreneurship-hub">Start a Business</button>
+                    </div>
+                    
+                    <!-- Card 3: Upskill & Grow - Red Theme -->
+                    <div class="feature-card red-theme">
+                        <i class="fas fa-graduation-cap card-icon"></i>
+                        <h3 class="card-title">Upskill & Grow</h3>
+                        <p class="card-description">Enhance your skills with our curated courses and digital literacy programs.</p>
+                        <button class="btn btn-primary nav-link" data-target="learn-grow">Learn More</button>
+                    </div>
+                </div>
+
+                <!-- Latest News & Updates Section -->
+                <div class="news-section">
+                    <h3 class="section-title">Latest News & Updates</h3>
+                    <div id="news-updates-list" class="news-grid">
+                        <!-- News articles will be dynamically loaded here -->
+                    </div>
+                </div>
+
+                <!-- Upcoming Events Section -->
+                <div class="events-section">
+                    <h3 class="section-title">Upcoming Events</h3>
+                    <div id="upcoming-events-list" class="events-grid">
+                        <!-- Events will be dynamically loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Find Jobs Section -->
+        <section id="find-jobs" class="page-section protected-content">
+            <div class="container">
+                <h2 class="page-title">Find Job Opportunities</h2>
+                
+                <div class="search-filters">
+                    <input type="text" id="job-search-query" placeholder="Search by keyword (e.g., 'marketing', 'driver')" class="search-input">
+                    <select id="job-filter-location" class="filter-select">
+                        <option value="">All Locations</option>
+                        <option value="Harare">Harare</option>
+                        <option value="Bulawayo">Bulawayo</option>
+                        <option value="Mutare">Mutare</option>
+                        <option value="Gweru">Gweru</option>
+                        <option value="Kwekwe">Kwekwe</option>
+                        <option value="Chitungwiza">Chitungwiza</option>
+                        <option value="Masvingo">Masvingo</option>
+                        <option value="Bindura">Bindura</option>
+                        <option value="Rusape">Rusape</option>
+                        <option value="Marondera">Marondera</option>
+                        <option value="Victoria Falls">Victoria Falls</option>
+                        <option value="Zvishavane">Zvishavane</option>
+                        <option value="Kadoma">Kadoma</option>
+                        <option value="Norton">Norton</option>
+                        <option value="Chinhoyi">Chinhoyi</option>
+                    </select>
+                    <select id="job-filter-type" class="filter-select">
+                        <option value="">All Job Types</option>
+                        <option value="Full-time">Full-time</option>
+                        <option value="Part-time">Part-time</option>
+                        <option value="Contract">Contract</option>
+                        <option value="Internship">Internship</option>
+                        <option value="Gig">Gig</option>
+                    </select>
+                    <button id="apply-job-filters" class="btn btn-secondary">Apply Filters</button>
+                </div>
+                
+                <div id="job-listings" class="job-grid">
+                    <!-- Job cards will be dynamically loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Post Job Section -->
+        <section id="post-job" class="page-section protected-content">
+            <div class="container">
+                <h2 class="page-title">Post a New Job</h2>
+                
+                <form id="post-job-form" class="job-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="employer-job-title">Job Title:</label>
+                            <input type="text" id="employer-job-title" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="employer-company-name">Company Name:</label>
+                            <input type="text" id="employer-company-name" class="form-input" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="employer-job-location">Location:</label>
+                            <select id="employer-job-location" class="form-select" required>
+                                <option value="">Select Location</option>
+                                <option value="Harare">Harare</option>
+                                <option value="Bulawayo">Bulawayo</option>
+                                <option value="Mutare">Mutare</option>
+                                <option value="Gweru">Gweru</option>
+                                <option value="Kwekwe">Kwekwe</option>
+                                <option value="Chitungwiza">Chitungwiza</option>
+                                <option value="Masvingo">Masvingo</option>
+                                <option value="Bindura">Bindura</option>
+                                <option value="Rusape">Rusape</option>
+                                <option value="Marondera">Marondera</option>
+                                <option value="Victoria Falls">Victoria Falls</option>
+                                <option value="Zvishavane">Zvishavane</option>
+                                <option value="Kadoma">Kadoma</option>
+                                <option value="Norton">Norton</option>
+                                <option value="Chinhoyi">Chinhoyi</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="employer-job-type">Job Type:</label>
+                            <select id="employer-job-type" class="form-select" required>
+                                <option value="">Select Job Type</option>
+                                <option value="Full-time">Full-time</option>
+                                <option value="Part-time">Part-time</option>
+                                <option value="Contract">Contract</option>
+                                <option value="Internship">Internship</option>
+                                <option value="Gig">Gig</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="employer-job-salary">Salary Range (e.g., $500 - $800):</label>
+                        <input type="text" id="employer-job-salary" class="form-input">
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="employer-job-description">Job Description:</label>
+                        <textarea id="employer-job-description" rows="5" class="form-textarea" required></textarea>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="employer-job-requirements">Requirements (comma-separated):</label>
+                        <textarea id="employer-job-requirements" rows="3" class="form-textarea" required></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="employer-date-posted">Date Posted:</label>
+                            <input type="date" id="employer-date-posted" class="form-input" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="employer-expiration-date">Expiration Date:</label>
+                            <input type="date" id="employer-expiration-date" class="form-input">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary full-width">Post Job</button>
+                </form>
+
+                <h3 class="section-title">My Posted Jobs</h3>
+                <div id="my-posted-jobs" class="job-grid">
+                    <!-- Posted jobs will be dynamically loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Advertise with Us Section -->
+        <section id="advertise-with-us" class="page-section protected-content">
+            <div class="container">
+                <h2 class="page-title">Advertise Your Business & Products</h2>
+                <p class="page-description">
+                    Reach a vibrant community of young professionals and aspiring entrepreneurs across Zimbabwe.
+                    Advertise your business, products, or services on Zim Connect to connect with your target audience!
+                </p>
+
+                <button id="show-advertise-form-btn" class="btn btn-warning">Request to Advertise</button>
+
+                <form id="advertise-request-form" class="advertise-form hidden">
+                    <h3 class="form-title">Advertisement Request Form</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="advertiser-name">Your Name:</label>
+                            <input type="text" id="advertiser-name" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="advertiser-email">Your Email:</label>
+                            <input type="email" id="advertiser-email" class="form-input" required>
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="business-name">Business/Product Name:</label>
+                        <input type="text" id="business-name" class="form-input" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="ad-content">Advertisement Content/Description:</label>
+                        <textarea id="ad-content" rows="5" class="form-textarea" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-warning full-width">Submit Ad Request</button>
+                    <p id="ad-request-message" class="success-message hidden">Your advertisement request has been submitted successfully! We will contact you soon.</p>
+                </form>
+
+                <h3 class="section-title">Featured Advertisements</h3>
+                <div id="advertisements-list" class="ads-grid">
+                    <!-- Advertisements will be dynamically loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Learn & Grow Section -->
+        <section id="learn-grow" class="page-section protected-content">
+            <div class="container">
+                <h2 class="page-title">Learn & Grow Your Skills</h2>
+                <p class="page-description">
+                    Explore a variety of courses and resources designed to enhance your employability and personal development.
+                </p>
+                <div id="learn-grow-cards" class="courses-grid">
+                    <!-- Course cards will be dynamically loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Entrepreneurship Hub Section -->
+        <section id="entrepreneurship-hub" class="page-section protected-content">
+            <div class="container">
+                <h2 class="page-title">Entrepreneurship Hub</h2>
+                <p class="page-description">
+                    This hub provides resources, mentorship opportunities, and guidance for young aspiring entrepreneurs in Zimbabwe.
+                    Turn your ideas into successful ventures!
+                </p>
+                <div id="entrepreneurship-cards" class="resources-grid">
+                    <!-- Resource cards will be dynamically loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Discover Zimbabwe Section -->
+        <section id="discover-zimbabwe" class="page-section">
+            <div class="container">
+                <h2 class="page-title">Discover the Heart of Zimbabwe!</h2>
+                <p class="page-description">
+                    Zimbabwe is a land of unparalleled beauty, rich history, and a resilient, welcoming people.
+                    From majestic waterfalls to ancient ruins, and vibrant culture, there's so much to explore and celebrate!
+                </p>
+
+                <div class="discover-section">
+                    <h3 class="section-title red-title">Zimbabwean Public Holidays</h3>
+                    <ul id="public-holidays-list" class="holidays-list">
+                        <!-- Public holidays will be dynamically loaded here -->
+                    </ul>
+                </div>
+
+                <div class="discover-section">
+                    <h3 class="section-title yellow-title">World Heritage Sites</h3>
+                    <div id="heritage-sites-list" class="heritage-grid">
+                        <!-- World Heritage Sites will be dynamically loaded here -->
+                    </div>
+                </div>
+
+                <div class="discover-section">
+                    <h3 class="section-title green-title">Popular Tourist Attractions</h3>
+                    <div id="tourist-attractions-list" class="attractions-grid">
+                        <!-- Tourist Attractions will be dynamically loaded here -->
+                    </div>
+                </div>
+
+                <div class="discover-section">
+                    <h3 class="section-title red-title">Tertiary Institutions in Zimbabwe</h3>
+                    <div id="tertiary-institutions-list" class="institutions-grid">
+                        <!-- Tertiary Institutions will be dynamically loaded here -->
+                    </div>
+                </div>
+
+                <div class="discover-section">
+                    <h3 class="section-title yellow-title">The Beauty of Zimbabwe & Its People</h3>
+                    <div class="beauty-content">
+                        <p>
+                            Zimbabwe boasts breathtaking natural wonders, including the awe-inspiring Victoria Falls, one of the Seven Natural Wonders of the World.
+                            Its diverse landscapes range from the granite hills of Matopos to the lush Eastern Highlands, offering incredible biodiversity and scenic vistas.
+                            The country is home to abundant wildlife, with national parks like Hwange providing unforgettable safari experiences.
+                        </p>
+                        <p>
+                            But beyond its natural splendor, the true treasure of Zimbabwe lies in its people. Known for their warmth, hospitality, and resilience,
+                            Zimbabweans embody a spirit of hope and perseverance. Their rich cultural heritage, expressed through vibrant music, dance, art, and storytelling,
+                            is a testament to a proud history and a dynamic present. The spirit of 'Ubuntu'—humanity towards others—is deeply ingrained, fostering strong community bonds and a welcoming atmosphere for all.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- My Profile Section -->
+        <section id="my-profile" class="page-section protected-content">
+            <div class="container">
+                <h2 class="page-title">My Profile</h2>
+                <div class="profile-content">
+                    <div class="profile-avatar">
+                        <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=1" alt="User Profile Picture" class="avatar-image">
+                    </div>
+                    <div class="profile-info">
+                        <h3 class="profile-name" id="profile-name">John Doe</h3>
+                        <p class="profile-detail" id="profile-email">Email: john.doe@example.com</p>
+                        <p class="profile-detail">Location: Harare, Zimbabwe</p>
+                        <p class="profile-detail">Skills: Digital Marketing, Graphic Design, Project Management</p>
+                        <button class="btn btn-primary">Edit Profile</button>
+                    </div>
+                </div>
+                <div class="applications-section">
+                    <h4 class="applications-title">My Applications</h4>
+                    <div id="my-applications" class="applications-container">
+                        <p class="no-applications">No applications submitted yet.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced Features Sections -->
+        <section id="enhanced-profiles" class="page-section protected-content">
+            <div class="container">
+                <h2 class="page-title">Enhanced User Profiles & Portfolios</h2>
+                <p class="page-description">
+                    This section would allow users to build comprehensive profiles, including detailed skills, work experience, educational background, and certifications.
+                    Users would also be able to upload digital portfolios (graphic design, writing samples, code snippets, photos of handcrafted goods) to showcase their work.
+                    A recommendation and endorsement system would be implemented to build credibility for youth.
+                </p>
+                <p class="note-text">
+                    **Note:** Full implementation of user profiles, portfolio uploads, and recommendation systems requires a robust backend database and user authentication, which are beyond the scope of a single HTML file. This is a conceptual placeholder.
+                </p>
+                <button class="btn btn-secondary back-to-home-btn">Back to Home</button>
+            </div>
+        </section>
+
+        <section id="interactive-learning" class="page-section protected-content">
+            <div class="container">
+                <h2 class="page-title">Interactive Learning & Skill Development</h2>
+                <p class="page-description">
+                    Here, users would find curated learning paths for in-demand skills like "Digital Marketing Fundamentals" or "Introduction to E-commerce."
+                    The platform would integrate with local vocational training centers and online course providers to offer access to relevant courses.
+                    Regular webinars and workshops on topics such as interview skills, CV writing, financial literacy, and business registration would also be hosted.
+                </p>
+                <p class="note-text">
+                    **Note:** Integration with external learning platforms, course tracking, and live webinar functionality requires backend development and API integrations, which are beyond the scope of a single HTML file. This is a conceptual placeholder.
+                </p>
+                <button class="btn btn-secondary back-to-home-btn">Back to Home</button>
+            </div>
+        </section>
+
+        <section id="community-networking" class="page-section protected-content">
+            <div class="container">
+                <h2 class="page-title">Community & Networking Features</h2>
+                <p class="page-description">
+                    This section would house forums and discussion boards for youth to connect, share experiences, and collaborate.
+                    An advanced mentorship matching system would facilitate direct connections between aspiring youth and experienced professionals.
+                    A calendar would feature local meetup and event listings, including career fairs and entrepreneurship expos across Zimbabwe.
+                </p>
+                <p class="note-text">
+                    **Note:** Real-time forum interactions, complex mentorship matching algorithms, and dynamic event listings require significant backend development and database management, which are beyond the scope of a single HTML file. This is a conceptual placeholder.
+                </p>
+                <button class="btn btn-secondary back-to-home-btn">Back to Home</button>
+            </div>
+        </section>
+
+        <section id="entrepreneurship-deep-dive" class="page-section protected-content">
+            <div class="container">
+                <h2 class="page-title">Entrepreneurship Hub Deep Dive</h2>
+                <p class="page-description">
+                    This expanded hub would offer detailed legal and regulatory guidance for business registration and tax compliance in Zimbabwe.
+                    It would provide comprehensive support for funding applications, including templates for grant applications, loan proposals, and pitch decks.
+                    The section would also feature inspiring success stories of young Zimbabwean entrepreneurs, offering motivation and practical insights.
+                </p>
+                <p class="note-text">
+                    **Note:** Dynamic content loading for legal guides, interactive funding application tools, and a comprehensive database of success stories require backend development, which are beyond the scope of a single HTML file. This is a conceptual placeholder.
+                </p>
+                <button class="btn btn-secondary back-to-home-btn">Back to Home</button>
+            </div>
+        </section>
+
+        <section id="data-analytics" class="page-section protected-content">
+            <div class="container">
+                <h2 class="page-title">Data & Analytics for Youth Empowerment</h2>
+                <p class="page-description">
+                    This section represents the backend and reporting capabilities of the platform. It would involve collecting anonymized data on job demand and youth skills to identify skill gaps and inform future training programs.
+                    Impact reporting would track key metrics such as job placements, businesses launched, and skills acquired to demonstrate the platform's overall effectiveness and impact on youth empowerment.
+                </p>
+                <p class="note-text">
+                    **Note:** This section primarily describes backend data collection and reporting functionalities, which are not directly visible to the end-user on the frontend. Implementing this requires database design, data processing, and reporting tools, which are beyond the scope of a single HTML file. This is a conceptual placeholder.
+                </p>
+                <button class="btn btn-secondary back-to-home-btn">Back to Home</button>
+            </div>
+        </section>
+
+        <!-- Sign In Section -->
+        <section id="sign-in" class="page-section">
+            <div class="container">
+                <h2 class="page-title">Sign In</h2>
+                <form id="sign-in-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="signin-email">Email:</label>
+                        <input type="email" id="signin-email" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signin-password">Password:</label>
+                        <input type="password" id="signin-password" class="form-input" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary full-width">Sign In</button>
+                    <p class="auth-link">Don't have an account? <a href="#" class="nav-link" data-target="sign-up">Sign Up</a></p>
+                </form>
+                <div id="signin-message" class="auth-message hidden"></div>
+            </div>
+        </section>
+
+        <!-- Sign Up Section -->
+        <section id="sign-up" class="page-section">
+            <div class="container">
+                <h2 class="page-title">Sign Up</h2>
+                <form id="sign-up-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name:</label>
+                        <input type="text" id="signup-name" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-email">Email:</label>
+                        <input type="email" id="signup-email" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-password">Password:</label>
+                        <input type="password" id="signup-password" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-confirm-password">Confirm Password:</label>
+                        <input type="password" id="signup-confirm-password" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="radio-group-label">I am signing up as:</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="user-type" value="job-seeker" checked>
+                                <span>Job Seeker</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="user-type" value="employer">
+                                <span>Employer</span>
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary full-width">Sign Up</button>
+                    <p class="auth-link">Already have an account? <a href="#" class="nav-link" data-target="sign-in">Sign In</a></p>
+                </form>
+                <div id="signup-message" class="auth-message hidden"></div>
+            </div>
+        </section>
+
+        <!-- Detail sections for heritage sites and attractions -->
+        <section id="whs1-details" class="page-section detail-section">
+            <div class="container">
+                <!-- Content will be dynamically populated by JavaScript -->
+            </div>
+        </section>
+
+        <section id="whs2-details" class="page-section detail-section">
+            <div class="container">
+                <!-- Content will be dynamically populated by JavaScript -->
+            </div>
+        </section>
+
+        <section id="whs3-details" class="page-section detail-section">
+            <div class="container">
+                <!-- Content will be dynamically populated by JavaScript -->
+            </div>
+        </section>
+
+        <section id="whs4-details" class="page-section detail-section">
+            <div class="container">
+                <!-- Content will be dynamically populated by JavaScript -->
+            </div>
+        </section>
+
+        <section id="whs5-details" class="page-section detail-section">
+            <div class="container">
+                <!-- Content will be dynamically populated by JavaScript -->
+            </div>
+        </section>
+
+        <section id="ta1-details" class="page-section detail-section">
+            <div class="container">
+                <!-- Content will be dynamically populated by JavaScript -->
+            </div>
+        </section>
+
+        <section id="ta2-details" class="page-section detail-section">
+            <div class="container">
+                <!-- Content will be dynamically populated by JavaScript -->
+            </div>
+        </section>
+
+        <section id="ta3-details" class="page-section detail-section">
+            <div class="container">
+                <!-- Content will be dynamically populated by JavaScript -->
+            </div>
+        </section>
+
+        <section id="ta4-details" class="page-section detail-section">
+            <div class="container">
+                <!-- Content will be dynamically populated by JavaScript -->
+            </div>
+        </section>
+
+        <section id="ta5-details" class="page-section detail-section">
+            <div class="container">
+                <!-- Content will be dynamically populated by JavaScript -->
+            </div>
+        </section>
+
+        <section id="ta6-details" class="page-section detail-section">
+            <div class="container">
+                <!-- Content will be dynamically populated by JavaScript -->
+            </div>
+        </section>
+
+        <section id="ta7-details" class="page-section detail-section">
+            <div class="container">
+                <!-- Content will be dynamically populated by JavaScript -->
+            </div>
+        </section>
+
+        <section id="ta8-details" class="page-section detail-section">
+            <div class="container">
+                <!-- Content will be dynamically populated by JavaScript -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Detail Modal -->
+    <div id="detail-modal" class="modal">
+        <div class="modal-content">
+            <button id="close-detail-modal" class="modal-close">&times;</button>
+            <h3 id="modal-title" class="modal-title"></h3>
+            <div id="modal-content" class="modal-body"></div>
+            <button id="modal-action-button" class="btn btn-primary modal-action hidden">Apply Now</button>
+            <p id="modal-message" class="modal-message hidden"></p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-text">
+                    &copy; 2025 Zim Connect. All rights reserved.
+                    <img src="https://af6815798a.imgdist.com/pub/bfra/knkjywkm/o5a/c9k/02e/zimbabwe-waving-flag-realistic-transparent-background-free-png.webp" alt="Zimbabwe Flag" class="footer-flag">
+                </p>
+                <div class="social-links">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <button id="show-contact-form-btn" class="btn btn-primary contact-btn">Contact Us</button>
+
+            <form id="contact-us-form" class="contact-form hidden">
+                <h3 class="form-title">Get in Touch</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="contact-name">Your Name:</label>
+                        <input type="text" id="contact-name" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-email">Your Email:</label>
+                        <input type="email" id="contact-email" class="form-input" required>
+                    </div>
+                </div>
+                <div class="form-group full-width">
+                    <label for="contact-subject">Subject:</label>
+                    <input type="text" id="contact-subject" class="form-input" required>
+                </div>
+                <div class="form-group full-width">
+                    <label for="contact-message">Message:</label>
+                    <textarea id="contact-message" rows="5" class="form-textarea" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-warning full-width">Send Message</button>
+                <p id="contact-message-status" class="success-message hidden"></p>
+            </form>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
