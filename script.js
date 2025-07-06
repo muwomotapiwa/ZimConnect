@@ -1,7 +1,3 @@
-// Authentication State Management
-let isAuthenticated = false;
-let currentUser = null;
-
 // Mock Data for Jobs
 let jobs = [
     {
@@ -396,6 +392,10 @@ const upcomingEvents = [
 let myPostedJobs = [];
 let myApplications = [];
 
+// Authentication state
+let isAuthenticated = false;
+let currentUser = null;
+
 // Zimbabwean flag color palettes
 const flagColorPalettes = [
     { name: 'green', bg: '#d1fae5', text: '#064e3b', icon: '#059669', button: '#10b981' },
@@ -434,56 +434,7 @@ function createStyledCard(content, type = 'default') {
     return card;
 }
 
-// Authentication Functions
-function updateAuthUI() {
-    const authText = document.getElementById('auth-text');
-    const mobileAuthText = document.getElementById('mobile-auth-text');
-    const authDropdown = document.getElementById('auth-dropdown');
-    const mobileAuthDropdown = document.getElementById('mobile-auth-dropdown');
-    const profileName = document.getElementById('profile-name');
-    const profileEmail = document.getElementById('profile-email');
-
-    if (isAuthenticated && currentUser) {
-        // Update desktop auth
-        authText.textContent = currentUser.name;
-        authDropdown.innerHTML = `
-            <li><a href="#" class="nav-link" data-target="my-profile">My Profile</a></li>
-            <li><a href="#" id="logout-btn">Logout</a></li>
-        `;
-
-        // Update mobile auth
-        mobileAuthText.textContent = currentUser.name;
-        mobileAuthDropdown.innerHTML = `
-            <li><a href="#" class="nav-link" data-target="my-profile">My Profile</a></li>
-            <li><a href="#" id="mobile-logout-btn">Logout</a></li>
-        `;
-
-        // Update profile info
-        if (profileName) profileName.textContent = currentUser.name;
-        if (profileEmail) profileEmail.textContent = `Email: ${currentUser.email}`;
-
-        // Hide auth overlay if visible
-        hideAuthOverlay();
-    } else {
-        // Reset to login state
-        authText.textContent = 'Login';
-        authDropdown.innerHTML = `
-            <li><a href="#" class="nav-link" data-target="sign-in">Sign In</a></li>
-            <li><a href="#" class="nav-link" data-target="sign-up">Sign Up</a></li>
-        `;
-
-        mobileAuthText.textContent = 'Login';
-        mobileAuthDropdown.innerHTML = `
-            <li><a href="#" class="nav-link" data-target="sign-in">Sign In</a></li>
-            <li><a href="#" class="nav-link" data-target="sign-up">Sign Up</a></li>
-        `;
-
-        // Reset profile info
-        if (profileName) profileName.textContent = 'Guest User';
-        if (profileEmail) profileEmail.textContent = 'Email: Please sign in';
-    }
-}
-
+// Authentication functions
 function showAuthOverlay() {
     document.getElementById('auth-overlay').style.display = 'flex';
 }
@@ -492,86 +443,161 @@ function hideAuthOverlay() {
     document.getElementById('auth-overlay').style.display = 'none';
 }
 
-function checkAuthAccess(targetPage) {
+function updateAuthUI() {
+    const authText = document.getElementById('auth-text');
+    const mobileAuthText = document.getElementById('mobile-auth-text');
+    const authDropdown = document.getElementById('auth-dropdown');
+    const mobileAuthDropdown = document.getElementById('mobile-auth-dropdown');
+    
+    if (isAuthenticated && currentUser) {
+        // Update desktop auth
+        authText.textContent = currentUser.name;
+        authDropdown.innerHTML = `
+            <li><a href="#" class="nav-link" data-target="my-profile">My Profile</a></li>
+            <li><a href="#" class="nav-link logout-btn">Logout</a></li>
+        `;
+        
+        // Update mobile auth
+        mobileAuthText.textContent = currentUser.name;
+        mobileAuthDropdown.innerHTML = `
+            <li><a href="#" class="nav-link" data-target="my-profile">My Profile</a></li>
+            <li><a href="#" class="nav-link logout-btn">Logout</a></li>
+        `;
+        
+        // Update profile page
+        document.getElementById('profile-name').textContent = currentUser.name;
+        document.getElementById('profile-email').textContent = `Email: ${currentUser.email}`;
+    } else {
+        // Reset to login state
+        authText.textContent = 'Login';
+        authDropdown.innerHTML = `
+            <li><a href="#" class="nav-link" data-target="sign-in">Sign In</a></li>
+            <li><a href="#" class="nav-link" data-target="sign-up">Sign Up</a></li>
+        `;
+        
+        mobileAuthText.textContent = 'Login';
+        mobileAuthDropdown.innerHTML = `
+            <li><a href="#" class="nav-link" data-target="sign-in">Sign In</a></li>
+            <li><a href="#" class="nav-link" data-target="sign-up">Sign Up</a></li>
+        `;
+    }
+}
+
+function handleSignIn(event) {
+    event.preventDefault();
+    
+    const email = document.getElementById('signin-email').value;
+    const password = document.getElementById('signin-password').value;
+    const messageDiv = document.getElementById('signin-message');
+    
+    // Simple validation
+    if (!email || !password) {
+        showAuthMessage('signin-message', 'Please fill in all fields.', 'error');
+        return;
+    }
+    
+    // Simulate authentication (in real app, this would be an API call)
+    setTimeout(() => {
+        isAuthenticated = true;
+        currentUser = {
+            name: email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1),
+            email: email
+        };
+        
+        updateAuthUI();
+        showAuthMessage('signin-message', 'Successfully signed in! Welcome back.', 'success');
+        
+        // Redirect to home page after 1.5 seconds
+        setTimeout(() => {
+            showPage('home');
+        }, 1500);
+    }, 1000);
+}
+
+function handleSignUp(event) {
+    event.preventDefault();
+    
+    const name = document.getElementById('signup-name').value;
+    const email = document.getElementById('signup-email').value;
+    const password = document.getElementById('signup-password').value;
+    const confirmPassword = document.getElementById('signup-confirm-password').value;
+    
+    // Simple validation
+    if (!name || !email || !password || !confirmPassword) {
+        showAuthMessage('signup-message', 'Please fill in all fields.', 'error');
+        return;
+    }
+    
+    if (password !== confirmPassword) {
+        showAuthMessage('signup-message', 'Passwords do not match.', 'error');
+        return;
+    }
+    
+    // Simulate registration (in real app, this would be an API call)
+    setTimeout(() => {
+        isAuthenticated = true;
+        currentUser = {
+            name: name,
+            email: email
+        };
+        
+        updateAuthUI();
+        showAuthMessage('signup-message', 'Account created successfully! Welcome to Zim Connect.', 'success');
+        
+        // Redirect to home page after 1.5 seconds
+        setTimeout(() => {
+            showPage('home');
+        }, 1500);
+    }, 1000);
+}
+
+function handleLogout() {
+    isAuthenticated = false;
+    currentUser = null;
+    myApplications = [];
+    myPostedJobs = [];
+    
+    updateAuthUI();
+    updateMyApplications();
+    displayJobs(myPostedJobs, 'my-posted-jobs');
+    
+    showPage('home');
+    
+    // Show a brief logout message
+    const tempMessage = document.createElement('div');
+    tempMessage.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+    tempMessage.textContent = 'Successfully logged out!';
+    document.body.appendChild(tempMessage);
+    
+    setTimeout(() => {
+        document.body.removeChild(tempMessage);
+    }, 3000);
+}
+
+function showAuthMessage(elementId, message, type) {
+    const messageDiv = document.getElementById(elementId);
+    messageDiv.textContent = message;
+    messageDiv.className = `auth-message ${type}`;
+    messageDiv.classList.remove('hidden');
+    
+    setTimeout(() => {
+        messageDiv.classList.add('hidden');
+    }, 5000);
+}
+
+function checkAuthRequired(targetPage) {
     const protectedPages = [
         'find-jobs', 'post-job', 'advertise-with-us', 'learn-grow', 
         'entrepreneurship-hub', 'my-profile', 'enhanced-profiles',
         'interactive-learning', 'community-networking', 
         'entrepreneurship-deep-dive', 'data-analytics'
     ];
-
+    
     if (protectedPages.includes(targetPage) && !isAuthenticated) {
         showAuthOverlay();
         return false;
     }
     return true;
-}
-
-function signIn(email, password) {
-    // Simulate authentication - in real app, this would call backend API
-    if (email && password) {
-        isAuthenticated = true;
-        currentUser = {
-            id: 'user_' + Date.now(),
-            name: email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1),
-            email: email,
-            type: 'job-seeker' // Default type
-        };
-        updateAuthUI();
-        return { success: true, message: 'Successfully signed in!' };
-    }
-    return { success: false, message: 'Invalid email or password.' };
-}
-
-function signUp(name, email, password, confirmPassword, userType) {
-    // Simulate registration - in real app, this would call backend API
-    if (password !== confirmPassword) {
-        return { success: false, message: 'Passwords do not match.' };
-    }
-    
-    if (name && email && password) {
-        isAuthenticated = true;
-        currentUser = {
-            id: 'user_' + Date.now(),
-            name: name,
-            email: email,
-            type: userType
-        };
-        updateAuthUI();
-        return { success: true, message: 'Account created successfully!' };
-    }
-    return { success: false, message: 'Please fill in all required fields.' };
-}
-
-function logout() {
-    isAuthenticated = false;
-    currentUser = null;
-    myApplications = [];
-    myPostedJobs = [];
-    updateAuthUI();
-    showPage('home');
-    
-    // Show logout message
-    const message = document.createElement('div');
-    message.className = 'auth-message success';
-    message.textContent = 'Successfully logged out!';
-    message.style.cssText = `
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        background: #10b981;
-        color: white;
-        padding: 1rem 2rem;
-        border-radius: 8px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        z-index: 1000;
-        animation: slideInRight 0.3s ease;
-    `;
-    document.body.appendChild(message);
-    
-    setTimeout(() => {
-        message.remove();
-    }, 3000);
 }
 
 // Function to display job listings
@@ -815,11 +841,6 @@ function closeDetailModal() {
 
 // Function to handle job application
 function applyForJob(job) {
-    if (!isAuthenticated) {
-        showAuthOverlay();
-        return;
-    }
-    
     myApplications.push(job);
     const modalMessage = document.getElementById('modal-message');
     modalMessage.textContent = 'Application submitted successfully! We will notify you of the next steps.';
@@ -853,11 +874,6 @@ function updateMyApplications() {
 // Function to handle employer job posting
 function postNewJob(event) {
     event.preventDefault();
-
-    if (!isAuthenticated) {
-        showAuthOverlay();
-        return;
-    }
 
     const title = document.getElementById('employer-job-title').value;
     const company = document.getElementById('employer-company-name').value;
@@ -896,11 +912,6 @@ function postNewJob(event) {
 // Function to handle advertisement request submission
 function submitAdRequest(event) {
     event.preventDefault();
-    
-    if (!isAuthenticated) {
-        showAuthOverlay();
-        return;
-    }
     
     document.getElementById('advertise-request-form').reset();
     document.getElementById('advertise-request-form').classList.add('hidden');
@@ -948,9 +959,9 @@ function filterJobs() {
 
 // Page navigation logic
 function showPage(pageId) {
-    // Check authentication for protected pages
-    if (!checkAuthAccess(pageId)) {
-        return;
+    // Check if authentication is required for this page
+    if (!checkAuthRequired(pageId)) {
+        return; // Don't navigate if auth is required but user is not authenticated
     }
 
     document.querySelectorAll('.page-section').forEach(section => {
@@ -999,18 +1010,6 @@ function showPage(pageId) {
     }
 }
 
-// Function to show auth message
-function showAuthMessage(elementId, message, isSuccess = true) {
-    const messageElement = document.getElementById(elementId);
-    messageElement.textContent = message;
-    messageElement.className = `auth-message ${isSuccess ? 'success' : 'error'}`;
-    messageElement.classList.remove('hidden');
-    
-    setTimeout(() => {
-        messageElement.classList.add('hidden');
-    }, 5000);
-}
-
 // Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
     // Initial display of all dynamic content
@@ -1030,9 +1029,6 @@ document.addEventListener('DOMContentLoaded', () => {
         datePostedInput.value = dateString;
     }
 
-    // Initialize auth UI
-    updateAuthUI();
-
     // Navigation event delegation
     document.addEventListener('click', (event) => {
         const navLink = event.target.closest('.nav-link');
@@ -1040,79 +1036,18 @@ document.addEventListener('DOMContentLoaded', () => {
             event.preventDefault();
             const targetId = navLink.dataset.target;
             if (targetId) {
+                // Close auth overlay if it's open and user clicked a nav link from it
+                if (document.getElementById('auth-overlay').style.display === 'flex') {
+                    hideAuthOverlay();
+                }
                 showPage(targetId);
             }
         }
 
-        // View details button handler
-        if (event.target.classList.contains('view-details-btn')) {
-            const itemId = event.target.dataset.itemId;
-            const itemType = event.target.dataset.itemType;
-            
-            if (itemType === 'job') {
-                const selectedItem = jobs.find(item => item.id === itemId);
-                if (selectedItem) {
-                    openDetailModal(selectedItem, itemType);
-                }
-            }
-        }
-
-        // Back to discover button handler
-        if (event.target.classList.contains('back-to-discover-btn')) {
-            showPage('discover-zimbabwe');
-        }
-
-        // Back to home button handler
-        if (event.target.classList.contains('back-to-home-btn')) {
-            showPage('home');
-        }
-
-        // Logout handlers
-        if (event.target.id === 'logout-btn' || event.target.id === 'mobile-logout-btn') {
+        // Handle logout
+        if (event.target.classList.contains('logout-btn')) {
             event.preventDefault();
-            logout();
-        }
-    });
-
-    // Auth overlay close
-    document.getElementById('auth-overlay').addEventListener('click', (event) => {
-        if (event.target.id === 'auth-overlay') {
-            hideAuthOverlay();
-        }
-    });
-
-    // Sign in form submission
-    document.getElementById('sign-in-form').addEventListener('submit', (event) => {
-        event.preventDefault();
-        const email = document.getElementById('signin-email').value;
-        const password = document.getElementById('signin-password').value;
-        
-        const result = signIn(email, password);
-        showAuthMessage('signin-message', result.message, result.success);
-        
-        if (result.success) {
-            setTimeout(() => {
-                showPage('home');
-            }, 1500);
-        }
-    });
-
-    // Sign up form submission
-    document.getElementById('sign-up-form').addEventListener('submit', (event) => {
-        event.preventDefault();
-        const name = document.getElementById('signup-name').value;
-        const email = document.getElementById('signup-email').value;
-        const password = document.getElementById('signup-password').value;
-        const confirmPassword = document.getElementById('signup-confirm-password').value;
-        const userType = document.querySelector('input[name="user-type"]:checked').value;
-        
-        const result = signUp(name, email, password, confirmPassword, userType);
-        showAuthMessage('signup-message', result.message, result.success);
-        
-        if (result.success) {
-            setTimeout(() => {
-                showPage('home');
-            }, 1500);
+            handleLogout();
         }
     });
 
@@ -1124,17 +1059,51 @@ document.addEventListener('DOMContentLoaded', () => {
     // Modal close
     document.getElementById('close-detail-modal').addEventListener('click', closeDetailModal);
 
+    // View details button handler
+    document.addEventListener('click', (event) => {
+        if (event.target.classList.contains('view-details-btn')) {
+            const itemId = event.target.dataset.itemId;
+            const itemType = event.target.dataset.itemType;
+            
+            if (itemType === 'job') {
+                const selectedItem = jobs.find(item => item.id === itemId);
+                if (selectedItem) {
+                    openDetailModal(selectedItem, itemType);
+                }
+            }
+        }
+    });
+
+    // Back to discover button handler
+    document.addEventListener('click', (event) => {
+        if (event.target.classList.contains('back-to-discover-btn')) {
+            showPage('discover-zimbabwe');
+        }
+    });
+
+    // Back to home button handler
+    document.addEventListener('click', (event) => {
+        if (event.target.classList.contains('back-to-home-btn')) {
+            showPage('home');
+        }
+    });
+
+    // Auth overlay click outside to close
+    document.getElementById('auth-overlay').addEventListener('click', (event) => {
+        if (event.target.id === 'auth-overlay') {
+            hideAuthOverlay();
+        }
+    });
+
     // Form submissions
     document.getElementById('post-job-form').addEventListener('submit', postNewJob);
     document.getElementById('advertise-request-form').addEventListener('submit', submitAdRequest);
     document.getElementById('contact-us-form').addEventListener('submit', submitContactForm);
+    document.getElementById('sign-in-form').addEventListener('submit', handleSignIn);
+    document.getElementById('sign-up-form').addEventListener('submit', handleSignUp);
 
     // Show/hide forms
     document.getElementById('show-advertise-form-btn').addEventListener('click', () => {
-        if (!isAuthenticated) {
-            showAuthOverlay();
-            return;
-        }
         const form = document.getElementById('advertise-request-form');
         form.classList.toggle('hidden');
         document.getElementById('ad-request-message').classList.add('hidden');
@@ -1155,4 +1124,7 @@ document.addEventListener('DOMContentLoaded', () => {
             closeDetailModal();
         }
     });
+
+    // Initialize auth UI
+    updateAuthUI();
 });
