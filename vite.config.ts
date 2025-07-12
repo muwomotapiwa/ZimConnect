@@ -8,6 +8,10 @@ export default defineConfig({
       exclude: /script\.js$/,
     })
   ],
+  esbuild: {
+    loader: 'js',
+    include: /\.(js)$/,
+  },
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
