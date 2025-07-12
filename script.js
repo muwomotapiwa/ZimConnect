@@ -428,3 +428,1013 @@ const flagColorPalettes = [
     { name: 'red', bg: '#fee2e2', text: '#991b1b', icon: '#dc2626', button: '#ef4444' },
     { name: 'black', bg: '#f3f4f6', text: '#111827', icon: '#374151', button: '#6b7280' }
 ];
+
+// DOM Content Loaded Event
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize the application
+    initializeApp();
+    
+    // Set up navigation
+    setupNavigation();
+    
+    // Set up authentication
+    setupAuthentication();
+    
+    // Load initial content
+    loadInitialContent();
+    
+    // Set up forms
+    setupForms();
+    
+    // Set up mobile navigation
+    setupMobileNavigation();
+    
+    // Monitor authentication state
+    monitorAuthState();
+});
+
+// Initialize the application
+function initializeApp() {
+    // Set current date for job posting form
+    const today = new Date().toISOString().split('T')[0];
+    const datePostedInput = document.getElementById('employer-date-posted');
+    if (datePostedInput) {
+        datePostedInput.value = today;
+    }
+    
+    // Show home section by default
+    showSection('home');
+}
+
+// Setup navigation functionality
+function setupNavigation() {
+    // Get all navigation links
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetSection = this.getAttribute('data-target');
+            
+            if (targetSection) {
+                // Check if section requires authentication
+                if (isProtectedSection(targetSection)) {
+                    if (!isLoggedIn) {
+                        showAuthOverlay();
+                        return;
+                    }
+                }
+                
+                // Hide auth overlay if it's visible
+                hideAuthOverlay();
+                
+                // Show the target section
+                showSection(targetSection);
+                
+                // Close mobile navigation if open
+                closeMobileNavigation();
+            }
+        });
+    });
+    
+    // Setup back to home buttons
+    const backToHomeButtons = document.querySelectorAll('.back-to-home-btn');
+    backToHomeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            showSection('home');
+        });
+    });
+}
+
+// Check if a section requires authentication
+function isProtectedSection(sectionId) {
+    const protectedSections = [
+        'find-jobs', 'post-job', 'advertise-with-us', 'learn-grow', 
+        'entrepreneurship-hub', 'my-profile', 'enhanced-profiles',
+        'interactive-learning', 'community-networking', 
+        'entrepreneurship-deep-dive', 'data-analytics'
+    ];
+    return protectedSections.includes(sectionId);
+}
+
+// Show authentication overlay
+function showAuthOverlay() {
+    const authOverlay = document.getElementById('auth-overlay');
+    if (authOverlay) {
+        authOverlay.style.display = 'flex';
+    }
+}
+
+// Hide authentication overlay
+function hideAuthOverlay() {
+    const authOverlay = document.getElementById('auth-overlay');
+    if (authOverlay) {
+        authOverlay.style.display = 'none';
+    }
+}
+
+// Show specific section
+function showSection(sectionId) {
+    // Hide all sections
+    const allSections = document.querySelectorAll('.page-section');
+    allSections.forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Show target section
+    const targetSection = document.getElementById(sectionId);
+    if (targetSection) {
+        targetSection.classList.add('active');
+        
+        // Load section-specific content
+        loadSectionContent(sectionId);
+    }
+}
+
+// Load content for specific sections
+function loadSectionContent(sectionId) {
+    switch(sectionId) {
+        case 'home':
+            loadNewsAndEvents();
+            break;
+        case 'find-jobs':
+            loadJobListings();
+            break;
+        case 'post-job':
+            loadMyPostedJobs();
+            break;
+        case 'advertise-with-us':
+            loadAdvertisements();
+            break;
+        case 'learn-grow':
+            loadLearnGrowCourses();
+            break;
+        case 'entrepreneurship-hub':
+            loadEntrepreneurshipResources();
+            break;
+        case 'discover-zimbabwe':
+            loadDiscoverZimbabweContent();
+            break;
+        case 'my-profile':
+            loadUserProfile();
+            break;
+    }
+}
+
+// Setup authentication functionality
+function setupAuthentication() {
+    // Setup auth overlay buttons
+    const authOverlayButtons = document.querySelectorAll('.auth-overlay .nav-link');
+    authOverlayButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            hideAuthOverlay();
+            const targetSection = this.getAttribute('data-target');
+            showSection(targetSection);
+        });
+    });
+    
+    // Setup forgot password link
+    const forgotPasswordLink = document.getElementById('forgot-password-link');
+    if (forgotPasswordLink) {
+        forgotPasswordLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            showSection('password-reset');
+        });
+    }
+}
+
+// Monitor Firebase authentication state
+function monitorAuthState() {
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // User is signed in
+            isLoggedIn = true;
+            currentUser = {
+                uid: user.uid,
+                email: user.email,
+                name: user.displayName || user.email.split('@')[0]
+            };
+            updateAuthUI(true);
+            console.log("✅ User signed in:", user.email);
+        } else {
+            // User is signed out
+            isLoggedIn = false;
+            currentUser = null;
+            updateAuthUI(false);
+            console.log("⛔ User signed out");
+        }
+    });
+}
+
+// Update authentication UI
+function updateAuthUI(loggedIn) {
+    const authText = document.getElementById('auth-text');
+    const mobileAuthText = document.getElementById('mobile-auth-text');
+    const authDropdown = document.getElementById('auth-dropdown');
+    const mobileAuthDropdown = document.getElementById('mobile-auth-dropdown');
+    
+    if (loggedIn && currentUser) {
+        // Update desktop auth
+        if (authText) {
+            authText.textContent = currentUser.name;
+        }
+        if (authDropdown) {
+            authDropdown.innerHTML = `
+                <li><a href="#" class="nav-link" data-target="my-profile">My Profile</a></li>
+                <li><a href="#" class="nav-link" id="logout-btn">Logout</a></li>
+            `;
+        }
+        
+        // Update mobile auth
+        if (mobileAuthText) {
+            mobileAuthText.textContent = currentUser.name;
+        }
+        if (mobileAuthDropdown) {
+            mobileAuthDropdown.innerHTML = `
+                <li><a href="#" class="nav-link" data-target="my-profile">My Profile</a></li>
+                <li><a href="#" class="nav-link" id="mobile-logout-btn">Logout</a></li>
+            `;
+        }
+        
+        // Setup logout functionality
+        setupLogoutButtons();
+        
+        // Update profile information
+        updateProfileInfo();
+        
+    } else {
+        // Reset to login state
+        if (authText) {
+            authText.textContent = 'Login';
+        }
+        if (authDropdown) {
+            authDropdown.innerHTML = `
+                <li><a href="#" class="nav-link" data-target="sign-in">Sign In</a></li>
+                <li><a href="#" class="nav-link" data-target="sign-up">Sign Up</a></li>
+            `;
+        }
+        
+        if (mobileAuthText) {
+            mobileAuthText.textContent = 'Login';
+        }
+        if (mobileAuthDropdown) {
+            mobileAuthDropdown.innerHTML = `
+                <li><a href="#" class="nav-link" data-target="sign-in">Sign In</a></li>
+                <li><a href="#" class="nav-link" data-target="sign-up">Sign Up</a></li>
+            `;
+        }
+        
+        // Re-setup navigation for new auth links
+        setupNavigation();
+    }
+}
+
+// Setup logout buttons
+function setupLogoutButtons() {
+    const logoutBtn = document.getElementById('logout-btn');
+    const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+    
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', handleLogout);
+    }
+    if (mobileLogoutBtn) {
+        mobileLogoutBtn.addEventListener('click', handleLogout);
+    }
+}
+
+// Handle logout
+function handleLogout(e) {
+    e.preventDefault();
+    
+    signOut(auth)
+        .then(() => {
+            showSection('home');
+            showMessage('Logged out successfully!', 'success');
+        })
+        .catch((error) => {
+            console.error('Logout error:', error);
+            showMessage('Error logging out: ' + error.message, 'error');
+        });
+}
+
+// Update profile information
+function updateProfileInfo() {
+    const profileName = document.getElementById('profile-name');
+    const profileEmail = document.getElementById('profile-email');
+    
+    if (currentUser) {
+        if (profileName) {
+            profileName.textContent = currentUser.name;
+        }
+        if (profileEmail) {
+            profileEmail.textContent = `Email: ${currentUser.email}`;
+        }
+    }
+}
+
+// Setup forms
+function setupForms() {
+    // Sign up form
+    const signUpForm = document.getElementById('sign-up-form');
+    if (signUpForm) {
+        signUpForm.addEventListener('submit', handleSignUp);
+    }
+    
+    // Sign in form
+    const signInForm = document.getElementById('sign-in-form');
+    if (signInForm) {
+        signInForm.addEventListener('submit', handleSignIn);
+    }
+    
+    // Password reset form
+    const passwordResetForm = document.getElementById('password-reset-form');
+    if (passwordResetForm) {
+        passwordResetForm.addEventListener('submit', handlePasswordReset);
+    }
+    
+    // Job posting form
+    const postJobForm = document.getElementById('post-job-form');
+    if (postJobForm) {
+        postJobForm.addEventListener('submit', handleJobPost);
+    }
+    
+    // Advertisement request form
+    const advertiseForm = document.getElementById('advertise-request-form');
+    if (advertiseForm) {
+        advertiseForm.addEventListener('submit', handleAdvertiseRequest);
+    }
+    
+    // Contact form
+    const contactForm = document.getElementById('contact-us-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', handleContactForm);
+    }
+    
+    // Show advertise form button
+    const showAdvertiseFormBtn = document.getElementById('show-advertise-form-btn');
+    if (showAdvertiseFormBtn) {
+        showAdvertiseFormBtn.addEventListener('click', function() {
+            const form = document.getElementById('advertise-request-form');
+            if (form) {
+                form.classList.toggle('hidden');
+            }
+        });
+    }
+    
+    // Show contact form button
+    const showContactFormBtn = document.getElementById('show-contact-form-btn');
+    if (showContactFormBtn) {
+        showContactFormBtn.addEventListener('click', function() {
+            const form = document.getElementById('contact-us-form');
+            if (form) {
+                form.classList.toggle('hidden');
+            }
+        });
+    }
+    
+    // Job search and filters
+    const applyFiltersBtn = document.getElementById('apply-job-filters');
+    if (applyFiltersBtn) {
+        applyFiltersBtn.addEventListener('click', applyJobFilters);
+    }
+}
+
+// Handle sign up
+function handleSignUp(e) {
+    e.preventDefault();
+    
+    const name = document.getElementById('signup-name').value;
+    const email = document.getElementById('signup-email').value;
+    const password = document.getElementById('signup-password').value;
+    const confirmPassword = document.getElementById('signup-confirm-password').value;
+    const userType = document.querySelector('input[name="user-type"]:checked').value;
+    
+    // Validation
+    if (password !== confirmPassword) {
+        showAuthMessage('signup', 'Passwords do not match!', 'error');
+        return;
+    }
+    
+    if (password.length < 6) {
+        showAuthMessage('signup', 'Password must be at least 6 characters long!', 'error');
+        return;
+    }
+    
+    // Create user with Firebase
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            // Store additional user info locally
+            localStorage.setItem('userType', userType);
+            localStorage.setItem('userName', name);
+            
+            showAuthMessage('signup', 'Account created successfully! Redirecting...', 'success');
+            
+            // Redirect to home after 2 seconds
+            setTimeout(() => {
+                showSection('home');
+            }, 2000);
+        })
+        .catch((error) => {
+            console.error('Signup error:', error);
+            showAuthMessage('signup', 'Signup error: ' + error.message, 'error');
+        });
+}
+
+// Handle sign in
+function handleSignIn(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('signin-email').value;
+    const password = document.getElementById('signin-password').value;
+    
+    signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            showAuthMessage('signin', 'Signed in successfully! Redirecting...', 'success');
+            
+            // Redirect to home after 2 seconds
+            setTimeout(() => {
+                showSection('home');
+            }, 2000);
+        })
+        .catch((error) => {
+            console.error('Signin error:', error);
+            showAuthMessage('signin', 'Sign in error: ' + error.message, 'error');
+        });
+}
+
+// Handle password reset
+function handlePasswordReset(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('reset-email').value;
+    
+    sendPasswordResetEmail(auth, email)
+        .then(() => {
+            showAuthMessage('reset', 'Password reset email sent! Check your inbox.', 'success');
+        })
+        .catch((error) => {
+            console.error('Password reset error:', error);
+            showAuthMessage('reset', 'Reset error: ' + error.message, 'error');
+        });
+}
+
+// Show authentication messages
+function showAuthMessage(formType, message, type) {
+    const messageElement = document.getElementById(`${formType}-message`);
+    if (messageElement) {
+        messageElement.textContent = message;
+        messageElement.className = `auth-message ${type}`;
+        messageElement.classList.remove('hidden');
+        
+        // Hide message after 5 seconds
+        setTimeout(() => {
+            messageElement.classList.add('hidden');
+        }, 5000);
+    }
+}
+
+// Handle job posting
+function handleJobPost(e) {
+    e.preventDefault();
+    
+    if (!isLoggedIn) {
+        showAuthOverlay();
+        return;
+    }
+    
+    const jobData = {
+        id: 'job' + Date.now(),
+        title: document.getElementById('employer-job-title').value,
+        company: document.getElementById('employer-company-name').value,
+        location: document.getElementById('employer-job-location').value,
+        type: document.getElementById('employer-job-type').value,
+        salary: document.getElementById('employer-job-salary').value,
+        description: document.getElementById('employer-job-description').value,
+        requirements: document.getElementById('employer-job-requirements').value.split(',').map(req => req.trim()),
+        datePosted: document.getElementById('employer-date-posted').value,
+        expirationDate: document.getElementById('employer-expiration-date').value,
+        postedBy: currentUser.email
+    };
+    
+    // Add to jobs array and my posted jobs
+    jobs.unshift(jobData);
+    myPostedJobs.unshift(jobData);
+    
+    // Reset form
+    e.target.reset();
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('employer-date-posted').value = today;
+    
+    // Reload job listings
+    loadJobListings();
+    loadMyPostedJobs();
+    
+    showMessage('Job posted successfully!', 'success');
+}
+
+// Handle advertisement request
+function handleAdvertiseRequest(e) {
+    e.preventDefault();
+    
+    // Show success message
+    const messageElement = document.getElementById('ad-request-message');
+    if (messageElement) {
+        messageElement.classList.remove('hidden');
+    }
+    
+    // Reset form
+    e.target.reset();
+    
+    // Hide form after submission
+    setTimeout(() => {
+        const form = document.getElementById('advertise-request-form');
+        if (form) {
+            form.classList.add('hidden');
+        }
+    }, 3000);
+}
+
+// Handle contact form
+function handleContactForm(e) {
+    e.preventDefault();
+    
+    // Show success message
+    const messageElement = document.getElementById('contact-message-status');
+    if (messageElement) {
+        messageElement.textContent = 'Message sent successfully! We will get back to you soon.';
+        messageElement.classList.remove('hidden');
+    }
+    
+    // Reset form
+    e.target.reset();
+    
+    // Hide form after submission
+    setTimeout(() => {
+        const form = document.getElementById('contact-us-form');
+        if (form) {
+            form.classList.add('hidden');
+        }
+    }, 3000);
+}
+
+// Setup mobile navigation
+function setupMobileNavigation() {
+    const hamburgerMenu = document.getElementById('hamburger-menu');
+    const mobileNav = document.getElementById('mobile-nav');
+    
+    if (hamburgerMenu && mobileNav) {
+        hamburgerMenu.addEventListener('click', function() {
+            mobileNav.classList.toggle('active');
+        });
+    }
+    
+    // Setup mobile dropdown toggles
+    const mobileDropdownTitles = document.querySelectorAll('.mobile-dropdown-title');
+    mobileDropdownTitles.forEach(title => {
+        title.addEventListener('click', function() {
+            const dropdown = this.nextElementSibling;
+            if (dropdown) {
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            }
+        });
+    });
+}
+
+// Close mobile navigation
+function closeMobileNavigation() {
+    const mobileNav = document.getElementById('mobile-nav');
+    if (mobileNav) {
+        mobileNav.classList.remove('active');
+    }
+}
+
+// Load initial content
+function loadInitialContent() {
+    loadNewsAndEvents();
+    loadJobListings();
+    loadLearnGrowCourses();
+    loadEntrepreneurshipResources();
+    loadAdvertisements();
+    loadDiscoverZimbabweContent();
+}
+
+// Load news and events for home page
+function loadNewsAndEvents() {
+    // Load latest news
+    const newsContainer = document.getElementById('news-updates-list');
+    if (newsContainer) {
+        newsContainer.innerHTML = latestNews.map(news => `
+            <div class="news-card">
+                <h4>${news.title}</h4>
+                <p class="news-date">${formatDate(news.date)}</p>
+                <p>${news.summary}</p>
+                <a href="${news.link}" class="btn btn-secondary">Read More</a>
+            </div>
+        `).join('');
+    }
+    
+    // Load upcoming events
+    const eventsContainer = document.getElementById('upcoming-events-list');
+    if (eventsContainer) {
+        eventsContainer.innerHTML = upcomingEvents.map(event => `
+            <div class="event-card">
+                <h4>${event.title}</h4>
+                <p class="event-date">${formatDate(event.date)}</p>
+                <p class="event-location">${event.location}</p>
+                <p>${event.description}</p>
+                <a href="${event.link}" class="btn btn-primary">Learn More</a>
+            </div>
+        `).join('');
+    }
+}
+
+// Load job listings
+function loadJobListings() {
+    const jobContainer = document.getElementById('job-listings');
+    if (jobContainer) {
+        jobContainer.innerHTML = jobs.map(job => `
+            <div class="job-card">
+                <h3>${job.title}</h3>
+                <p><strong>${job.company}</strong> - ${job.location}</p>
+                <p><strong>Type:</strong> ${job.type}</p>
+                <p><strong>Salary:</strong> ${job.salary}</p>
+                <p>${job.description.substring(0, 150)}...</p>
+                <button class="btn btn-primary" onclick="showJobDetails('${job.id}')">View Details</button>
+            </div>
+        `).join('');
+    }
+}
+
+// Load my posted jobs
+function loadMyPostedJobs() {
+    const container = document.getElementById('my-posted-jobs');
+    if (container) {
+        if (myPostedJobs.length === 0) {
+            container.innerHTML = '<p class="no-applications">No jobs posted yet.</p>';
+        } else {
+            container.innerHTML = myPostedJobs.map(job => `
+                <div class="job-card">
+                    <h3>${job.title}</h3>
+                    <p><strong>${job.company}</strong> - ${job.location}</p>
+                    <p><strong>Type:</strong> ${job.type}</p>
+                    <p><strong>Posted:</strong> ${formatDate(job.datePosted)}</p>
+                    <p><strong>Expires:</strong> ${formatDate(job.expirationDate)}</p>
+                    <button class="btn btn-secondary" onclick="editJob('${job.id}')">Edit</button>
+                    <button class="btn btn-warning" onclick="deleteJob('${job.id}')">Delete</button>
+                </div>
+            `).join('');
+        }
+    }
+}
+
+// Load learn & grow courses
+function loadLearnGrowCourses() {
+    const container = document.getElementById('learn-grow-cards');
+    if (container) {
+        container.innerHTML = learnGrowCourses.map(course => `
+            <div class="course-card">
+                <i class="${course.icon} card-icon"></i>
+                <h3 class="card-title">${course.title}</h3>
+                <p class="card-description">${course.description}</p>
+                <button class="btn btn-primary">Start Learning</button>
+            </div>
+        `).join('');
+    }
+}
+
+// Load entrepreneurship resources
+function loadEntrepreneurshipResources() {
+    const container = document.getElementById('entrepreneurship-cards');
+    if (container) {
+        container.innerHTML = entrepreneurshipResources.map(resource => `
+            <div class="resource-card">
+                <i class="${resource.icon} card-icon"></i>
+                <h3 class="card-title">${resource.title}</h3>
+                <p class="card-description">${resource.description}</p>
+                <button class="btn btn-primary">Access Resource</button>
+            </div>
+        `).join('');
+    }
+}
+
+// Load advertisements
+function loadAdvertisements() {
+    const container = document.getElementById('advertisements-list');
+    if (container) {
+        container.innerHTML = advertisements.map(ad => `
+            <div class="ad-card">
+                <img src="${ad.image}" alt="${ad.title}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                <h3>${ad.title}</h3>
+                <p>${ad.description}</p>
+                <p><strong>Contact:</strong> ${ad.contact}</p>
+                <a href="${ad.link}" class="btn btn-warning">Learn More</a>
+            </div>
+        `).join('');
+    }
+}
+
+// Load Discover Zimbabwe content
+function loadDiscoverZimbabweContent() {
+    // Load public holidays
+    const holidaysContainer = document.getElementById('public-holidays-list');
+    if (holidaysContainer) {
+        holidaysContainer.innerHTML = publicHolidays.map(holiday => `
+            <li><strong>${holiday.date}:</strong> ${holiday.name}</li>
+        `).join('');
+    }
+    
+    // Load heritage sites
+    const heritageContainer = document.getElementById('heritage-sites-list');
+    if (heritageContainer) {
+        heritageContainer.innerHTML = heritageSites.map(site => `
+            <div class="heritage-card">
+                <img src="${site.image}" alt="${site.name}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                <h4>${site.name}</h4>
+                <p><strong>Location:</strong> ${site.location}</p>
+                <p>${site.description.substring(0, 150)}...</p>
+                <button class="btn btn-primary" onclick="showSiteDetails('${site.id}')">Learn More</button>
+            </div>
+        `).join('');
+    }
+    
+    // Load tourist attractions
+    const attractionsContainer = document.getElementById('tourist-attractions-list');
+    if (attractionsContainer) {
+        attractionsContainer.innerHTML = touristAttractions.map(attraction => `
+            <div class="attraction-card">
+                <img src="${attraction.image}" alt="${attraction.name}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+                <h4>${attraction.name}</h4>
+                <p><strong>Location:</strong> ${attraction.location}</p>
+                <p>${attraction.description}</p>
+                <button class="btn btn-primary" onclick="showAttractionDetails('${attraction.id}')">Explore</button>
+            </div>
+        `).join('');
+    }
+    
+    // Load tertiary institutions
+    const institutionsContainer = document.getElementById('tertiary-institutions-list');
+    if (institutionsContainer) {
+        institutionsContainer.innerHTML = tertiaryInstitutions.map(institution => `
+            <div class="institution-card">
+                <h4>${institution.name}</h4>
+                <p><strong>Type:</strong> ${institution.type}</p>
+                <p><strong>Location:</strong> ${institution.location}</p>
+            </div>
+        `).join('');
+    }
+}
+
+// Load user profile
+function loadUserProfile() {
+    if (!isLoggedIn) {
+        showAuthOverlay();
+        return;
+    }
+    
+    // Profile information is updated in updateProfileInfo()
+    
+    // Load user applications
+    const applicationsContainer = document.getElementById('my-applications');
+    if (applicationsContainer) {
+        if (myApplications.length === 0) {
+            applicationsContainer.innerHTML = '<p class="no-applications">No applications submitted yet.</p>';
+        } else {
+            applicationsContainer.innerHTML = myApplications.map(application => `
+                <div class="application-item">
+                    <h4>${application.jobTitle}</h4>
+                    <p><strong>Company:</strong> ${application.company}</p>
+                    <p><strong>Applied:</strong> ${formatDate(application.appliedDate)}</p>
+                    <p><strong>Status:</strong> ${application.status}</p>
+                </div>
+            `).join('');
+        }
+    }
+}
+
+// Apply job filters
+function applyJobFilters() {
+    const searchQuery = document.getElementById('job-search-query').value.toLowerCase();
+    const locationFilter = document.getElementById('job-filter-location').value;
+    const typeFilter = document.getElementById('job-filter-type').value;
+    
+    let filteredJobs = jobs.filter(job => {
+        const matchesSearch = !searchQuery || 
+            job.title.toLowerCase().includes(searchQuery) ||
+            job.description.toLowerCase().includes(searchQuery) ||
+            job.company.toLowerCase().includes(searchQuery);
+        
+        const matchesLocation = !locationFilter || job.location === locationFilter;
+        const matchesType = !typeFilter || job.type === typeFilter;
+        
+        return matchesSearch && matchesLocation && matchesType;
+    });
+    
+    // Update job listings with filtered results
+    const jobContainer = document.getElementById('job-listings');
+    if (jobContainer) {
+        if (filteredJobs.length === 0) {
+            jobContainer.innerHTML = '<p class="no-applications">No jobs found matching your criteria.</p>';
+        } else {
+            jobContainer.innerHTML = filteredJobs.map(job => `
+                <div class="job-card">
+                    <h3>${job.title}</h3>
+                    <p><strong>${job.company}</strong> - ${job.location}</p>
+                    <p><strong>Type:</strong> ${job.type}</p>
+                    <p><strong>Salary:</strong> ${job.salary}</p>
+                    <p>${job.description.substring(0, 150)}...</p>
+                    <button class="btn btn-primary" onclick="showJobDetails('${job.id}')">View Details</button>
+                </div>
+            `).join('');
+        }
+    }
+}
+
+// Show job details in modal
+function showJobDetails(jobId) {
+    const job = jobs.find(j => j.id === jobId);
+    if (!job) return;
+    
+    const modal = document.getElementById('detail-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalContent = document.getElementById('modal-content');
+    const modalActionButton = document.getElementById('modal-action-button');
+    
+    if (modal && modalTitle && modalContent && modalActionButton) {
+        modalTitle.textContent = job.title;
+        modalContent.innerHTML = `
+            <p><strong>Company:</strong> ${job.company}</p>
+            <p><strong>Location:</strong> ${job.location}</p>
+            <p><strong>Type:</strong> ${job.type}</p>
+            <p><strong>Salary:</strong> ${job.salary}</p>
+            <p><strong>Posted:</strong> ${formatDate(job.datePosted)}</p>
+            <p><strong>Expires:</strong> ${formatDate(job.expirationDate)}</p>
+            <h4>Description:</h4>
+            <p>${job.description}</p>
+            <h4>Requirements:</h4>
+            <ul>
+                ${job.requirements.map(req => `<li>${req}</li>`).join('')}
+            </ul>
+        `;
+        
+        modalActionButton.textContent = 'Apply Now';
+        modalActionButton.classList.remove('hidden');
+        modalActionButton.onclick = () => applyForJob(jobId);
+        
+        modal.style.display = 'flex';
+    }
+}
+
+// Show heritage site details
+function showSiteDetails(siteId) {
+    const site = heritageSites.find(s => s.id === siteId);
+    if (!site) return;
+    
+    const modal = document.getElementById('detail-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalContent = document.getElementById('modal-content');
+    const modalActionButton = document.getElementById('modal-action-button');
+    
+    if (modal && modalTitle && modalContent && modalActionButton) {
+        modalTitle.textContent = site.name;
+        modalContent.innerHTML = `
+            <img src="${site.image}" alt="${site.name}" style="width: 100%; height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+            <p><strong>Location:</strong> ${site.location}</p>
+            <p>${site.description}</p>
+        `;
+        
+        modalActionButton.classList.add('hidden');
+        modal.style.display = 'flex';
+    }
+}
+
+// Show attraction details
+function showAttractionDetails(attractionId) {
+    const attraction = touristAttractions.find(a => a.id === attractionId);
+    if (!attraction) return;
+    
+    const modal = document.getElementById('detail-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalContent = document.getElementById('modal-content');
+    const modalActionButton = document.getElementById('modal-action-button');
+    
+    if (modal && modalTitle && modalContent && modalActionButton) {
+        modalTitle.textContent = attraction.name;
+        modalContent.innerHTML = `
+            <img src="${attraction.image}" alt="${attraction.name}" style="width: 100%; height: 300px; object-fit: cover; border-radius: 8px; margin-bottom: 1rem;">
+            <p><strong>Location:</strong> ${attraction.location}</p>
+            <p>${attraction.description}</p>
+        `;
+        
+        modalActionButton.classList.add('hidden');
+        modal.style.display = 'flex';
+    }
+}
+
+// Apply for job
+function applyForJob(jobId) {
+    if (!isLoggedIn) {
+        showAuthOverlay();
+        return;
+    }
+    
+    const job = jobs.find(j => j.id === jobId);
+    if (!job) return;
+    
+    // Check if already applied
+    const alreadyApplied = myApplications.some(app => app.jobId === jobId);
+    if (alreadyApplied) {
+        showModalMessage('You have already applied for this job!');
+        return;
+    }
+    
+    // Add to applications
+    const application = {
+        id: 'app' + Date.now(),
+        jobId: jobId,
+        jobTitle: job.title,
+        company: job.company,
+        appliedDate: new Date().toISOString().split('T')[0],
+        status: 'Pending'
+    };
+    
+    myApplications.push(application);
+    showModalMessage('Application submitted successfully!');
+}
+
+// Show modal message
+function showModalMessage(message) {
+    const modalMessage = document.getElementById('modal-message');
+    if (modalMessage) {
+        modalMessage.textContent = message;
+        modalMessage.classList.remove('hidden');
+        
+        setTimeout(() => {
+            modalMessage.classList.add('hidden');
+        }, 3000);
+    }
+}
+
+// Close modal
+document.addEventListener('click', function(e) {
+    if (e.target.id === 'close-detail-modal' || e.target.id === 'detail-modal') {
+        const modal = document.getElementById('detail-modal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+});
+
+// Edit job (placeholder)
+function editJob(jobId) {
+    showMessage('Edit functionality coming soon!', 'info');
+}
+
+// Delete job
+function deleteJob(jobId) {
+    if (confirm('Are you sure you want to delete this job posting?')) {
+        // Remove from jobs array
+        jobs = jobs.filter(job => job.id !== jobId);
+        // Remove from my posted jobs
+        myPostedJobs = myPostedJobs.filter(job => job.id !== jobId);
+        
+        // Reload listings
+        loadJobListings();
+        loadMyPostedJobs();
+        
+        showMessage('Job deleted successfully!', 'success');
+    }
+}
+
+// Utility functions
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+}
+
+function showMessage(message, type = 'info') {
+    // Create a temporary message element
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `auth-message ${type}`;
+    messageDiv.textContent = message;
+    messageDiv.style.position = 'fixed';
+    messageDiv.style.top = '20px';
+    messageDiv.style.right = '20px';
+    messageDiv.style.zIndex = '9999';
+    messageDiv.style.padding = '1rem';
+    messageDiv.style.borderRadius = '8px';
+    messageDiv.style.maxWidth = '300px';
+    
+    document.body.appendChild(messageDiv);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        if (messageDiv.parentNode) {
+            messageDiv.parentNode.removeChild(messageDiv);
+        }
+    }, 3000);
+}
