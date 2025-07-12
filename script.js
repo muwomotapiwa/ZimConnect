@@ -424,4 +424,7 @@ let currentUser = null;
 // Zimbabwean flag color palettes
 const flagColorPalettes = [
     { name: 'green', bg: '#d1fae5', text: '#064e3b', icon: '#059669', button: '#10b981' },
-    { name: 'yellow', bg: '#fef3c7', text: '#92400e', icon: '#d97706', button:
+    { name: 'yellow', bg: '#fef3c7', text: '#92400e', icon: '#d97706', button: '#f59e0b' },
+    { name: 'red', bg: '#fee2e2', text: '#991b1b', icon: '#dc2626', button: '#ef4444' },
+    { name: 'black', bg: '#f3f4f6', text: '#111827', icon: '#374151', button: '#6b7280' }
+];
