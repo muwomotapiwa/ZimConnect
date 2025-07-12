@@ -1,3 +1,28 @@
+// Firebase SDKs
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    sendPasswordResetEmail,
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+// Firebase config
+const firebaseConfig = {
+    apiKey: "AIzaSyBLz7-sWUuMvIxvB0dQgrZkx13bsDEmafY",
+    authDomain: "zimconnect-ddcfe.firebaseapp.com",
+    projectId: "zimconnect-ddcfe",
+    storageBucket: "zimconnect-ddcfe.firebasestorage.app",
+    messagingSenderId: "964798095540",
+    appId: "1:964798095540:web:ef1a98ed3b4af9903fb7e1"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
 // Mock Data for Jobs
 let jobs = [
     {
@@ -393,7 +418,7 @@ let myPostedJobs = [];
 let myApplications = [];
 
 // Authentication state
-let isAuthenticated = false;
+let isLoggedIn = false;
 let currentUser = null;
 
 // Zimbabwean flag color palettes
