@@ -23,10 +23,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Mock Data for Jobs
-let jobs = [
-    {
-        id: 'job1',
         title: 'Junior Digital Marketing Specialist',
         company: 'ZimTech Solutions',
         location: 'Harare',
