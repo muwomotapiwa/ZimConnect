@@ -406,6 +406,8 @@ const upcomingEvents = [
     {
         id: 'event3',
         title: 'Digital Skills for the Future Webinar',
+    }
+]
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize the application
     console.log('🚀 Zim Connect initialized successfully!');
