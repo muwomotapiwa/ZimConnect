@@ -406,33 +406,29 @@ const upcomingEvents = [
     {
         id: 'event3',
         title: 'Digital Skills for the Future Webinar',
-        date: '2025-02-10',
-        location: 'Online',
-        description: 'Join our expert panel discussion on essential digital skills for the evolving job market.',
-        link: '#'
-    }
-];
-
-// Arrays to store user data (in-memory)
-let myPostedJobs = [];
-let myApplications = [];
-
-// Authentication state
-let isLoggedIn = false;
-let currentUser = null;
-
-// Zimbabwean flag color palettes
-const flagColorPalettes = [
-    { name: 'green', bg: '#d1fae5', text: '#064e3b', icon: '#059669', button: '#10b981' },
-    { name: 'yellow', bg: '#fef3c7', text: '#92400e', icon: '#d97706', button: '#f59e0b' },
-    { name: 'red', bg: '#fee2e2', text: '#991b1b', icon: '#dc2626', button: '#ef4444' },
-    { name: 'black', bg: '#f3f4f6', text: '#111827', icon: '#374151', button: '#6b7280' }
-];
-
-// DOM Content Loaded Event
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize the application
-    initializeApp();
+    console.log('🚀 Zim Connect initialized successfully!');
+    
+    // Load initial data
+    loadNewsUpdates();
+    loadUpcomingEvents();
+    loadJobListings();
+    loadAdvertisements();
+    loadLearnGrowCards();
+    loadEntrepreneurshipCards();
+    loadPublicHolidays();
+    loadHeritageSites();
+    loadTouristAttractions();
+    loadTertiaryInstitutions();
+    
+    // Set current date for job posting
+    const today = new Date().toISOString().split('T')[0];
+    const datePostedInput = document.getElementById('employer-date-posted');
+    if (datePostedInput) {
+        datePostedInput.value = today;
+    }
+    
     
     // Set up navigation
     setupNavigation();
