@@ -30,7 +30,7 @@ let myApplications = [];
 let myPostedJobs = [];
 
 // Mock Data for Jobs
-const jobs = [
+let jobs = [
     {
         id: 'job1',
         title: 'Junior Digital Marketing Specialist',
@@ -463,7 +463,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Initialize the application
-function initializeApp() {
+function setupApplication() {
     // Set current date for job posting form
     const today = new Date().toISOString().split('T')[0];
     const datePostedInput = document.getElementById('employer-date-posted');
